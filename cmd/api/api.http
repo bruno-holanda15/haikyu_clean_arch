@@ -1,0 +1,10 @@
+POST http://localhost:8081/createPlayer
+Host: localhost:8081
+Content-Type: application/json
+
+{
+    "name": "Hinata",
+    "position": "central",
+    "height": "1.65",
+    "play_grade": 3
+}
