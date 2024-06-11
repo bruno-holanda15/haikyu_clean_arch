@@ -2,6 +2,7 @@ package webserver
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -43,8 +44,24 @@ func Start(port string, handler http.Handler, options ...ServerOption) {
 	<-ctx.Done()
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	
+
+	fmt.Println("Shutting Down server http")
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatalf("error shutting down server http")
+	}
+	fmt.Println("Server stopped")
+}
+
+// WithReadTimeout configure http.Server parameter ReadTimeout
+func WithReadTimeout(t time.Duration) ServerOption {
+	return func(srv *http.Server) {
+		srv.ReadTimeout = t
+	}
+}
+
+// WithWriteTimeout configure http.Server parameter WriteTimeout
+func WithWriteTimeout(t time.Duration) ServerOption {
+	return func(srv *http.Server) {
+		srv.WriteTimeout = t
 	}
 }
