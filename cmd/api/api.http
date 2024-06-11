@@ -3,8 +3,8 @@ Host: localhost:8081
 Content-Type: application/json
 
 {
-    "name": "Hinata",
-    "position": "central",
-    "height": "1.65",
-    "play_grade": 3
+    "name": "Daichi",
+    "position": "oposto",
+    "height": 1.72,
+    "play_grade": 2
 }

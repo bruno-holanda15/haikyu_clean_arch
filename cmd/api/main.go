@@ -2,10 +2,10 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
-	"haikyu_game/internal/domain/usecase"
 	"haikyu_game/internal/infra/database"
+	"haikyu_game/internal/infra/http/echo"
+	"haikyu_game/internal/infra/webserver"
 	"net/http"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -18,29 +18,10 @@ func main() {
 	}
 
 	repository := database.NewPlayerRepository(db)
-	createPlayerUsecase := usecase.NewCreatePlayerUseCase(repository)
-
-	http.HandleFunc("/createPlayer", func(w http.ResponseWriter, r *http.Request) {
-		var input usecase.InputCreatePlayer
-		err := json.NewDecoder(r.Body).Decode(&input)
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		output, err := createPlayerUsecase.Execute(input)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		err = json.NewEncoder(w).Encode(output)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-	})
+	server := echo.Handlers(repository)
 
 	fmt.Println("Server running")
+	webserver.Start("8081", server)
+
 	http.ListenAndServe(":8081", nil)
 }
