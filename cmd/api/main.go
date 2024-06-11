@@ -6,7 +6,6 @@ import (
 	"haikyu_game/internal/infra/database"
 	"haikyu_game/internal/infra/http/echo"
 	"haikyu_game/internal/infra/webserver"
-	"net/http"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -22,6 +21,4 @@ func main() {
 
 	fmt.Println("Server running")
 	webserver.Start("8081", server)
-
-	http.ListenAndServe(":8081", nil)
 }
